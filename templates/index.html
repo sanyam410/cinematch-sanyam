@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CineMatch — Find something worth watching</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<script>
+
+    const searchForm =
+        document.getElementById("movie-search-form");
+
+    const searchButton =
+        document.getElementById("search-button");
+
+    const searchButtonText =
+        document.getElementById("search-button-text");
+
+    const searchLoading =
+        document.getElementById("search-loading");
+
+    const searchArrow =
+        document.getElementById("search-arrow");
+
+
+    searchForm.addEventListener("submit", function () {
+
+        searchButton.disabled = true;
+
+        searchButtonText.style.display = "none";
+
+        searchArrow.style.display = "none";
+
+        searchLoading.style.display = "inline-flex";
+
+    });
+
+</script>
+
+
+<body>
+
+
+    <!-- ==============================
+         HERO / HOMEPAGE
+         ============================== -->
+    <!-- =========================================
+     HOW CINEMATCH WORKS
+     ========================================= -->
+
+    <section class="how-cinematch-works">
+
+        <div class="how-header">
+
+        <p class="eyebrow">
+            THE CINEMATCH METHOD
+        </p>
+
+        <h2>
+            Discover films
+            <span>that feel right.</span>
+        </h2>
+
+        <p class="how-intro">
+            CineMatch looks beyond simple popularity.
+            Choose a film you love and discover movies
+            connected by the things that make it unique.
+        </p>
+
+        <a
+            href="{{ url_for('explore') }}"
+            class="how-explore-button"
+        >
+            Explore cinema
+            <span>→</span>
+        </a>
+
+        </div>
+
+
+    <!-- Cinematic visual -->
+
+        <div
+            class="method-cinema-visual"
+            aria-hidden="true"
+        >
+
+            <div class="method-poster method-poster-one"></div>
+
+            <div class="method-poster method-poster-two"></div>
+
+            <div class="method-poster method-poster-three"></div>
+
+            <div class="method-visual-overlay"></div>
+
+            <div class="method-visual-label">
+                <span>01</span>
+                <span>DISCOVER</span>
+            </div>
+
+        </div>
+
+
+    <!-- Steps -->
+
+        <div class="how-steps">
+
+
+            <div class="how-step">
+
+            <span class="step-number">
+                01
+            </span>
+
+            <div class="step-line"></div>
+
+            <h3>
+                Pick a movie
+            </h3>
+
+            <p>
+                Start with a film you already love
+                or one you've been curious about.
+            </p>
+
+            </div>
+
+
+            <div class="how-step">
+
+            <span class="step-number">
+                02
+            </span>
+
+            <div class="step-line"></div>
+
+            <h3>
+                CineMatch analyzes
+            </h3>
+
+            <p>
+                Our recommendation system looks at
+                factors such as genre, cast, director,
+                keywords and ratings.
+            </p>
+
+            </div>
+
+
+            <div class="how-step">
+
+            <span class="step-number">
+                03
+            </span>
+
+            <div class="step-line"></div>
+
+            <h3>
+                Discover something new
+            </h3>
+
+            <p>
+                Get a curated selection of films that
+                share meaningful similarities with your choice.
+            </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+    
+
+    </section>
+
+    <main class="hero">
+
+        <!-- Movie collage background -->
+        <div class="movie-collage" aria-hidden="true">
+
+            <div class="poster poster-1"></div>
+            <div class="poster poster-2"></div>
+            <div class="poster poster-3"></div>
+            <div class="poster poster-4"></div>
+            <div class="poster poster-5"></div>
+            <div class="poster poster-6"></div>
+            <div class="poster poster-7"></div>
+            <div class="poster poster-8"></div>
+
+        </div>
+
+
+        <!-- Dark cinematic overlay -->
+        <div class="hero-overlay"></div>
+
+
+        <!-- Navigation -->
+        <header class="navbar">
+
+            <a href="/" class="logo">
+                CineMatch
+            </a>
+
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="{{ url_for('explore') }}">Explore</a>
+                <a href="#">About</a>
+            </nav>
+
+        </header>
+
+
+        <!-- Hero content -->
+        <section class="hero-content">
+
+            <p class="eyebrow">
+                MOVIE DISCOVERY
+            </p>
+
+            <h1>
+                Find something<br>
+                worth watching.
+            </h1>
+
+            <p class="hero-description">
+                Tell us a movie you love.<br>
+                We'll find where to go next.
+            </p>
+
+
+            <!-- Search -->
+            <form
+                action="/recommend"
+                method="POST"
+                class="search-form"
+                id="movie-search-form"
+            >
+
+                <div class="search-box">
+
+                    <span class="search-icon">⌕</span>
+
+                    <input
+                        type="text"
+                        name="movie"
+                        id="movie-input"
+                        placeholder="Search for a movie..."
+                        autocomplete="off"
+                        required
+                    >
+
+                    <button
+                        type="submit"
+                        id="search-button"
+                    >
+                        <span id="search-button-text">
+                            Find movies
+                        </span>
+
+                        <span
+                            class="search-loading"
+                            id="search-loading"
+                        >
+                            <span class="loading-dot"></span>
+                            Finding...
+                        </span>
+
+                        <span
+                            class="arrow"
+                            id="search-arrow"
+                        >
+                            →
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+
+        <!-- Small bottom hint -->
+        <div class="scroll-hint">
+            <span>Discover</span>
+            <span class="scroll-line"></span>
+        </div>
+
+    </main>
+
+</body>
+
+</html>
+

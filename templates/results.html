@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CineMatch — Your Recommendations</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    <!-- ============================= -->
+    <!-- NAVIGATION -->
+    <!-- ============================= -->
+
+    <nav class="navbar">
+
+        <a href="{{ url_for('home') }}" class="logo">
+            CineMatch
+        </a>
+
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('home') }}">Explore</a>
+            <a href="{{ url_for('home') }}">About</a>
+        </div>
+
+    </nav>
+
+
+    <!-- ============================= -->
+    <!-- RESULTS -->
+    <!-- ============================= -->
+
+    <main class="results-page">
+
+        <section class="results-header">
+
+            <p class="eyebrow">
+                YOUR NEXT WATCH
+            </p>
+
+            <h1>
+                Because you liked
+                <span>{{ movie }}</span>
+            </h1>
+
+            <p class="results-subtitle">
+                Here are a few films we think you might enjoy.
+            </p>
+
+        </section>
+
+
+        {% if recommendations %}
+
+        <!-- ============================= -->
+        <!-- MOVIE GRID -->
+        <!-- ============================= -->
+
+        <section class="movie-grid">
+
+            {% for rec in recommendations %}
+
+            <a
+                href="{{ url_for('movie_details', title=rec.name) }}"
+                class="movie-card"
+            >
+
+                <!-- POSTER -->
+
+                <div class="movie-poster">
+
+                    {% if rec.poster %}
+
+                        <img
+                            src="{{ rec.poster }}"
+                            alt="{{ rec.name }} poster"
+                        >
+
+                    {% else %}
+
+                        <div class="poster-placeholder">
+                            <span>{{ rec.name[0] }}</span>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- MOVIE INFORMATION -->
+
+                <div class="movie-info">
+
+                    <h2>
+                        {{ rec.name }}
+                    </h2>
+
+                    <p class="movie-meta">
+                        {{ rec.year }}
+                        <span>•</span>
+                        {{ rec.director }}
+                    </p>
+
+                    <p class="movie-actor">
+                        {{ rec.lead_actor }}
+                    </p>
+
+                    {% if rec.imdb_rating %}
+
+                    <p class="movie-rating">
+                        ★ {{ rec.imdb_rating }}
+                    </p>
+
+                    {% elif rec.imdb %}
+
+                    <p class="movie-rating">
+                        ★ {{ rec.imdb }}
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </a>
+
+            {% endfor %}
+
+        </section>
+
+
+        {% else %}
+
+        <!-- ============================= -->
+        <!-- NO RESULTS -->
+        <!-- ============================= -->
+
+        <section class="no-results">
+
+            <div class="no-results-symbol">
+                —
+            </div>
+
+            <h2>
+                We couldn't find that movie.
+            </h2>
+
+            <p>
+                Try another film and we'll find something for you.
+            </p>
+
+            <a
+                href="{{ url_for('home') }}"
+                class="back-link"
+            >
+                ← Search another movie
+            </a>
+
+        </section>
+
+        {% endif %}
+
+
+        <!-- ============================= -->
+        <!-- BACK TO HOME -->
+        <!-- ============================= -->
+
+        <div class="results-footer">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="back-link"
+            >
+                ← Search another movie
+            </a>
+
+        </div>
+
+    </main>
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ movie.title }} — CineMatch</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <main class="movie-page">
+
+        <a href="javascript:history.back()" class="movie-back">
+            ← Back to recommendations
+        </a>
+
+        <section class="movie-details">
+
+            <!-- POSTER -->
+            <div class="movie-poster-wrapper">
+
+                {% if movie.Poster and movie.Poster != "N/A" %}
+                    <img
+                        src="{{ movie.Poster }}"
+                        alt="{{ movie.title }}"
+                        class="movie-poster"
+                    >
+                {% else %}
+                    <div class="movie-poster-placeholder">
+                        <span>{{ movie.title[0] }}</span>
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <!-- INFORMATION -->
+            <div class="movie-info">
+
+                <div class="movie-eyebrow">
+                    CINEMATCH
+                </div>
+
+                <h1 class="movie-title">
+                    {{ movie.title }}
+                </h1>
+
+                <div class="movie-meta">
+
+                    {% if movie.year %}
+                        <span>{{ movie.year }}</span>
+                    {% endif %}
+
+                    {% if movie.runtime %}
+                        <span>·</span>
+                        <span>{{ movie.runtime }}</span>
+                    {% endif %}
+
+                    {% if movie.genre %}
+                        <span>·</span>
+                        <span>{{ movie.genre }}</span>
+                    {% endif %}
+
+                </div>
+
+
+                {% if movie.plot %}
+                    <p class="movie-plot">
+                        {{ movie.plot }}
+                    </p>
+                {% endif %}
+
+
+                <div class="movie-divider"></div>
+
+
+                <div class="movie-facts">
+
+                    {% if movie.director %}
+                        <div class="movie-fact">
+                            <span class="fact-label">DIRECTOR</span>
+                            <span class="fact-value">
+                                {{ movie.director }}
+                            </span>
+                        </div>
+                    {% endif %}
+
+
+                    {% if movie.actors %}
+                        <div class="movie-fact">
+                            <span class="fact-label">CAST</span>
+                            <span class="fact-value">
+                                {{ movie.actors }}
+                            </span>
+                        </div>
+                    {% endif %}
+
+
+                    {% if movie.imdbRating %}
+                        <div class="movie-fact">
+                            <span class="fact-label">IMDb</span>
+                            <span class="fact-value imdb-rating">
+                                ★ {{ movie.imdbRating }}
+                            </span>
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
