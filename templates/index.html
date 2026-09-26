@@ -10,35 +10,22 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchForm = document.getElementById("movie-search-form");
+        const searchButton = document.getElementById("search-button");
+        const searchButtonText = document.getElementById("search-button-text");
+        const searchLoading = document.getElementById("search-loading");
+        const searchArrow = document.getElementById("search-arrow");
 
-    const searchForm =
-        document.getElementById("movie-search-form");
+        if (!searchForm) return;
 
-    const searchButton =
-        document.getElementById("search-button");
-
-    const searchButtonText =
-        document.getElementById("search-button-text");
-
-    const searchLoading =
-        document.getElementById("search-loading");
-
-    const searchArrow =
-        document.getElementById("search-arrow");
-
-
-    searchForm.addEventListener("submit", function () {
-
-        searchButton.disabled = true;
-
-        searchButtonText.style.display = "none";
-
-        searchArrow.style.display = "none";
-
-        searchLoading.style.display = "inline-flex";
-
+        searchForm.addEventListener("submit", function () {
+            searchButton.disabled = true;
+            searchButtonText.style.display = "none";
+            searchArrow.style.display = "none";
+            searchLoading.style.display = "inline-flex";
+        });
     });
-
 </script>
 
 

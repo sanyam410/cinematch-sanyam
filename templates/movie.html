@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ movie.title }} — CineMatch</title>
+    <title>{{ movie.Title }} — CineMatch</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
@@ -20,25 +20,22 @@
 
         <section class="movie-details">
 
-            <!-- POSTER -->
             <div class="movie-poster-wrapper">
 
                 {% if movie.Poster and movie.Poster != "N/A" %}
                     <img
                         src="{{ movie.Poster }}"
-                        alt="{{ movie.title }}"
+                        alt="{{ movie.Title }}"
                         class="movie-poster"
                     >
                 {% else %}
                     <div class="movie-poster-placeholder">
-                        <span>{{ movie.title[0] }}</span>
+                        <span>{{ movie.Title[0] }}</span>
                     </div>
                 {% endif %}
 
             </div>
 
-
-            <!-- INFORMATION -->
             <div class="movie-info">
 
                 <div class="movie-eyebrow">
@@ -46,61 +43,56 @@
                 </div>
 
                 <h1 class="movie-title">
-                    {{ movie.title }}
+                    {{ movie.Title }}
                 </h1>
 
                 <div class="movie-meta">
 
-                    {% if movie.year %}
-                        <span>{{ movie.year }}</span>
+                    {% if movie.Year and movie.Year != "N/A" %}
+                        <span>{{ movie.Year }}</span>
                     {% endif %}
 
-                    {% if movie.runtime %}
+                    {% if movie.Runtime and movie.Runtime != "N/A" %}
                         <span>·</span>
-                        <span>{{ movie.runtime }}</span>
+                        <span>{{ movie.Runtime }}</span>
                     {% endif %}
 
-                    {% if movie.genre %}
+                    {% if movie.Genre and movie.Genre != "N/A" %}
                         <span>·</span>
-                        <span>{{ movie.genre }}</span>
+                        <span>{{ movie.Genre }}</span>
                     {% endif %}
 
                 </div>
 
-
-                {% if movie.plot %}
+                {% if movie.Plot and movie.Plot != "N/A" %}
                     <p class="movie-plot">
-                        {{ movie.plot }}
+                        {{ movie.Plot }}
                     </p>
                 {% endif %}
 
-
                 <div class="movie-divider"></div>
-
 
                 <div class="movie-facts">
 
-                    {% if movie.director %}
+                    {% if movie.Director and movie.Director != "N/A" %}
                         <div class="movie-fact">
                             <span class="fact-label">DIRECTOR</span>
                             <span class="fact-value">
-                                {{ movie.director }}
+                                {{ movie.Director }}
                             </span>
                         </div>
                     {% endif %}
 
-
-                    {% if movie.actors %}
+                    {% if movie.Actors and movie.Actors != "N/A" %}
                         <div class="movie-fact">
                             <span class="fact-label">CAST</span>
                             <span class="fact-value">
-                                {{ movie.actors }}
+                                {{ movie.Actors }}
                             </span>
                         </div>
                     {% endif %}
 
-
-                    {% if movie.imdbRating %}
+                    {% if movie.imdbRating and movie.imdbRating != "N/A" %}
                         <div class="movie-fact">
                             <span class="fact-label">IMDb</span>
                             <span class="fact-value imdb-rating">
