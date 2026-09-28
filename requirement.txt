@@ -1,0 +1,8 @@
+flask
+gunicorn
+pandas
+numpy
+scikit-learn
+rapidfuzz
+python-dotenv
+requests
