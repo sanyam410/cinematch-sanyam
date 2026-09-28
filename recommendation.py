@@ -7,6 +7,8 @@ import requests
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 import re
+from functools import lru_cache
+load_dotenv()          # recommendation.py now loads .env itself
 
 df = pd.read_csv("Clean_Data.csv")
 embeddings  = np.load("movie_embeddings.npy")
@@ -20,7 +22,7 @@ def normalize(title):
     def convert_part(match):
         num=match.group(1).lower()
         return f'part{roman_to_num.get(num, num)}'
-        title=re.sub(r'\bpart\s+(i{1,3}|iv|v|\d+)\b)', convert_part,title)
+        title=title = re.sub(r'\bpart\s+(i{1,3}|iv|v|\d+)\b', convert_part, title)
         title=re.sub(r'\s+','',title).strip()
         
     return title
@@ -34,7 +36,7 @@ def find_local(title, threshold=85):
 
     # Also understand "Heat of 95" / "Heat 95"
     if not year_match:
-        short_year_match = re.search(r'\b(?:of\s+)?(\d{2})\b', title)
+        short_year_match = re.search(r'\bof\s+(\d{2})\b', title)
 
         if short_year_match:
             short_year = int(short_year_match.group(1))
@@ -99,7 +101,6 @@ def find_local(title, threshold=85):
 
     return match[2]
 
-    return match[2]
 
 def recommend(idx, top_n=5):
     """Given a row index, find its top_n most similar movies by plot embedding."""
@@ -122,16 +123,67 @@ def recommend(idx, top_n=5):
     results=results.drop(index=idx)
     results=results.sort_values(by='final_score',ascending=False).head(top_n)
     return results[['name','year','lead_actor','director','imdb_rating','plot','similarity','bonus','final_score']]
-    
+
+# --------------------------------------------------
+# OMDb FALLBACK (movies not in our dataset)
+# --------------------------------------------------
+@lru_cache(maxsize=1)
+def _get_model():
+    """Lazy: model loads only the first time a fallback is needed."""
+    from sentence_transformers import SentenceTransformer
+    return SentenceTransformer("all-MiniLM-L6-v2")
+
+def _omdb_lookup(title):
+    api_key = os.getenv("OMDB_API_KEY")
+    if not api_key:
+        return None
+    try:
+        r = requests.get(
+            "https://www.omdbapi.com/",
+            params={"apikey": api_key, "t": title},
+            timeout=10,
+        )
+        data = r.json()
+        if data.get("Response") == "True":
+            return data
+    except requests.RequestException:
+        pass
+    return None
+
+def get_recommendations_by_plot(plot_text, top_n=5):
+    """Recommend local movies whose plots are closest to plot_text."""
+    vec = _get_model().encode([plot_text])[0].reshape(1, -1)
+    sims = cosine_similarity(vec, embeddings)[0]
+
+    top = np.argsort(sims)[::-1][:top_n]
+    results = df.iloc[top][
+        ["name", "year", "lead_actor", "director", "imdb_rating", "plot"]
+    ].copy()
+    results["similarity"] = sims[top]
+    results["bonus"] = 0.0
+    results["final_score"] = results["similarity"]
+    results["year"] = pd.to_numeric(results["year"], errors="coerce").astype("Int64")
+    return results.reset_index(drop=True)
+
 def get_recommendations(title, top_n=5):
     idx = find_local(title)
+    if idx is not None:
+        return recommend(idx, top_n)
 
-    if idx is None:
-        return None
+    # ---- FALLBACK: not in dataset → embed its OMDb plot ----
+    lookup_title = title.strip()
+    details = _omdb_lookup(lookup_title)
+    if details is None:
+        cleaned = re.sub(r'\((19|20)\d{2}\)|\bmovie\s+(19|20)\d{2}\b',
+                         '', lookup_title).strip()
+        if cleaned and cleaned != lookup_title:
+            lookup_title = cleaned
+            details = _omdb_lookup(lookup_title)
 
-    results = recommend(idx, top_n)
+    if details and details.get("Plot") not in (None, "", "N/A"):
+        return get_recommendations_by_plot(details["Plot"], top_n)
+    return None
 
-    return results
 # --------------------------------------------------
 # EXPLORE PAGE
 # --------------------------------------------------
@@ -179,4 +231,6 @@ def get_movies_by_genre(genre=None, limit=12):
         ]
     ]
 
-print(get_recommendations("Inception"))
+
+print(df[df["name"].str.contains("1917|2012", na=False)][["name", "year"]])
+print(df.columns)

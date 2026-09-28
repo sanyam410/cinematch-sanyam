@@ -9,67 +9,45 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const searchForm = document.getElementById("movie-search-form");
-        const searchButton = document.getElementById("search-button");
-        const searchButtonText = document.getElementById("search-button-text");
-        const searchLoading = document.getElementById("search-loading");
-        const searchArrow = document.getElementById("search-arrow");
-
-        if (!searchForm) return;
-
-        searchForm.addEventListener("submit", function () {
-            searchButton.disabled = true;
-            searchButtonText.style.display = "none";
-            searchArrow.style.display = "none";
-            searchLoading.style.display = "inline-flex";
-        });
-    });
-</script>
 
 
 <body>
 
 
     <!-- ==============================
-         HERO / HOMEPAGE
+         HOW CINEMATCH WORKS
          ============================== -->
-    <!-- =========================================
-     HOW CINEMATCH WORKS
-     ========================================= -->
-
     <section class="how-cinematch-works">
 
         <div class="how-header">
 
-        <p class="eyebrow">
-            THE CINEMATCH METHOD
-        </p>
+            <p class="eyebrow">
+                THE CINEMATCH METHOD
+            </p>
 
-        <h2>
-            Discover films
-            <span>that feel right.</span>
-        </h2>
+            <h2>
+                Discover films
+                <span>that feel right.</span>
+            </h2>
 
-        <p class="how-intro">
-            CineMatch looks beyond simple popularity.
-            Choose a film you love and discover movies
-            connected by the things that make it unique.
-        </p>
+            <p class="how-intro">
+                CineMatch looks beyond simple popularity.
+                Choose a film you love and discover movies
+                connected by the things that make it unique.
+            </p>
 
-        <a
-            href="{{ url_for('explore') }}"
-            class="how-explore-button"
-        >
-            Explore cinema
-            <span>→</span>
-        </a>
+            <a
+                href="{{ url_for('explore') }}"
+                class="how-explore-button"
+            >
+                Explore cinema
+                <span>→</span>
+            </a>
 
         </div>
 
 
-    <!-- Cinematic visual -->
+        <!-- Cinematic visual -->
 
         <div
             class="method-cinema-visual"
@@ -92,68 +70,68 @@
         </div>
 
 
-    <!-- Steps -->
+        <!-- Steps -->
 
         <div class="how-steps">
 
 
             <div class="how-step">
 
-            <span class="step-number">
-                01
-            </span>
+                <span class="step-number">
+                    01
+                </span>
 
-            <div class="step-line"></div>
+                <div class="step-line"></div>
 
-            <h3>
-                Pick a movie
-            </h3>
+                <h3>
+                    Pick a movie
+                </h3>
 
-            <p>
-                Start with a film you already love
-                or one you've been curious about.
-            </p>
-
-            </div>
-
-
-            <div class="how-step">
-
-            <span class="step-number">
-                02
-            </span>
-
-            <div class="step-line"></div>
-
-            <h3>
-                CineMatch analyzes
-            </h3>
-
-            <p>
-                Our recommendation system looks at
-                factors such as genre, cast, director,
-                keywords and ratings.
-            </p>
+                <p>
+                    Start with a film you already love
+                    or one you've been curious about.
+                </p>
 
             </div>
 
 
             <div class="how-step">
 
-            <span class="step-number">
-                03
-            </span>
+                <span class="step-number">
+                    02
+                </span>
 
-            <div class="step-line"></div>
+                <div class="step-line"></div>
 
-            <h3>
-                Discover something new
-            </h3>
+                <h3>
+                    CineMatch analyzes
+                </h3>
 
-            <p>
-                Get a curated selection of films that
-                share meaningful similarities with your choice.
-            </p>
+                <p>
+                    Our recommendation system looks at
+                    factors such as genre, cast, director,
+                    keywords and ratings.
+                </p>
+
+            </div>
+
+
+            <div class="how-step">
+
+                <span class="step-number">
+                    03
+                </span>
+
+                <div class="step-line"></div>
+
+                <h3>
+                    Discover something new
+                </h3>
+
+                <p>
+                    Get a curated selection of films that
+                    share meaningful similarities with your choice.
+                </p>
 
             </div>
 
@@ -162,9 +140,6 @@
 
     </section>
 
-    
-
-    </section>
 
     <main class="hero">
 
@@ -221,6 +196,32 @@
             </p>
 
 
+            <!-- Cinephile's Corner -->
+            <section class="cinephile">
+
+                <div class="cine-card">
+                    <span class="cine-label">🎞️ Did you know</span>
+                    <p>{{ cine.fact }}</p>
+                </div>
+
+                <div class="cine-card quote">
+                    <span class="cine-label">🗣️ Line of the day</span>
+                    <blockquote>"{{ cine.quote[0] }}"</blockquote>
+                    <cite>{{ cine.quote[1] }} ({{ cine.quote[2] }})</cite>
+                </div>
+
+                <div class="cine-card">
+                    <span class="cine-label">📅 On this day</span>
+                    {% if cine.today %}
+                        <p><strong>{{ cine.today.0 }}</strong> — {{ cine.today.1 }}.</p>
+                    {% else %}
+                        <p>{{ cine.fallback_fact }}</p>
+                    {% endif %}
+                </div>
+
+            </section>
+
+
             <!-- Search -->
             <form
                 action="/recommend"
@@ -271,6 +272,8 @@
 
             </form>
 
+        </section>
+
 
         <!-- Small bottom hint -->
         <div class="scroll-hint">
@@ -280,7 +283,26 @@
 
     </main>
 
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchForm = document.getElementById("movie-search-form");
+            const searchButton = document.getElementById("search-button");
+            const searchButtonText = document.getElementById("search-button-text");
+            const searchLoading = document.getElementById("search-loading");
+            const searchArrow = document.getElementById("search-arrow");
+
+            if (!searchForm) return;
+
+            searchForm.addEventListener("submit", function () {
+                searchButton.disabled = true;
+                searchButtonText.style.display = "none";
+                searchArrow.style.display = "none";
+                searchLoading.style.display = "inline-flex";
+            });
+        });
+    </script>
+
 </body>
 
 </html>
-

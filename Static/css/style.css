@@ -1555,3 +1555,92 @@ body::-webkit-scrollbar-thumb {
     }
 }
 
+/* ========== CINEPHILE'S CORNER ========== */
+
+.cine-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.cine-header::after {              /* thin gold line filling the rest of the row */
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(240, 217, 150, 0.35);
+}
+.cine-header span {
+  color: #f0d996;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.cinephile {
+  max-width: 1100px;
+  margin: 4rem auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.cine-card {
+  border: 1px solid rgba(240, 217, 150, 0.25);
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  flex-direction: column;
+}
+.cine-label {
+  color: #f0d996;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.72rem;
+  margin-bottom: 0.9rem;
+}
+.cine-card p {
+  color: #e8e6e0;
+  line-height: 1.6;
+  font-size: 1rem;
+  margin: 0;
+}
+/* the quote card gets the spotlight */
+.cine-card.quote blockquote {
+  font-style: italic;
+  font-size: 1.35rem;
+  line-height: 1.45;
+  margin: 0 0 0.75rem;
+  color: #fff;
+}
+.cine-card.quote cite {
+  color: #f0d996;
+  font-style: normal;
+  font-size: 0.9rem;
+}
+.cine-card strong {
+  color: #f0d996;                  /* the year in "On this day" */
+}
+/* subtle lift on hover */
+.cine-card:hover {
+  border-color: rgba(240, 217, 150, 0.55);
+  background: rgba(255, 255, 255, 0.05);
+  transition: 0.25s ease;
+}
+/* mobile: stack */
+@media (max-width: 800px) {
+  .cine-grid { grid-template-columns: 1fr; }
+}
+
+/* ========== SEARCH BAR — CENTERED ========== */
+.search-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 3rem auto 0;
+}
+.search-box {
+  width: 100%;
+  max-width: 860px;
+}

@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import requests
 import os
 import pandas as pd
+from cinephile import daily_content
 load_dotenv()
 
 app = Flask(__name__, static_folder="Static")
@@ -20,26 +21,16 @@ OMDB_API_KEY = os.getenv("OMDB_API_KEY")
 # OMDb MOVIE DETAILS
 # --------------------------------------------------
 
-def get_movie_details(movie_title):
-
-    url = "https://www.omdbapi.com/"
-
-    params = {
-        "apikey": OMDB_API_KEY,
-        "t": movie_title
-    }
-
-    try:
-        response = requests.get(url, params=params, timeout=10)
-        data = response.json()
-
-        if data.get("Response") == "True":
-            return data
-
-    except requests.RequestException:
-        pass
-
-    return None
+def get_movie_details(movie_title_key):
+    if not OMDB_API_KEY:          # don't hit API without a key
+        return None
+    response = requests.get(
+        "https://www.omdbapi.com/",
+        params={"apikey": OMDB_API_KEY, "t": movie_title_key},
+        timeout=10,
+    )
+    data = response.json()
+    return data if data.get("Response") == "True" else None
 
 
 # --------------------------------------------------
@@ -57,7 +48,7 @@ def serve_image(filename):
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html',cine=daily_content())
 
 # --------------------------------------------------
 # EXPLORE
@@ -198,6 +189,7 @@ def recommend():
         results = get_recommendations(movie)
 
     except Exception:
+        app.logger.exception("Recommendation failed")
         return render_template(
             "results.html",
             movie=movie,
@@ -288,5 +280,6 @@ def movie_details(title):
 # --------------------------------------------------
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=os.getenv("FLASK_DEBUG") == "1")
+
 
