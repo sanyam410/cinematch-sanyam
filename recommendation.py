@@ -5,7 +5,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 import os
 import requests
 from dotenv import load_dotenv
-from sentence_transformers import SentenceTransformer
 import re
 from functools import lru_cache
 load_dotenv()          # recommendation.py now loads .env itself
@@ -13,7 +12,15 @@ load_dotenv()          # recommendation.py now loads .env itself
 df = pd.read_csv("Clean_Data.csv")
 embeddings  = np.load("movie_embeddings.npy")
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
+@lru_cache(maxsize=1)
+def _get_model():
+    try:
+        from sentence_transformers import SentenceTransformer   # import INSIDE the function
+        return SentenceTransformer("all-MiniLM-L6-v2")
+    except ImportError:
+        return None      # not installed on Render → fallback disabled, app still runs
+
+
 
 def normalize(title):
     title = str(title).lower().strip()
@@ -128,10 +135,7 @@ def recommend(idx, top_n=5):
 # OMDb FALLBACK (movies not in our dataset)
 # --------------------------------------------------
 @lru_cache(maxsize=1)
-def _get_model():
-    """Lazy: model loads only the first time a fallback is needed."""
-    from sentence_transformers import SentenceTransformer
-    return SentenceTransformer("all-MiniLM-L6-v2")
+
 
 def _omdb_lookup(title):
     api_key = os.getenv("OMDB_API_KEY")
@@ -180,7 +184,7 @@ def get_recommendations(title, top_n=5):
             lookup_title = cleaned
             details = _omdb_lookup(lookup_title)
 
-    if details and details.get("Plot") not in (None, "", "N/A"):
+    if details and details.get("Plot") not in (None, "", "N/A") and _get_model() is not None:
         return get_recommendations_by_plot(details["Plot"], top_n)
     return None
 
@@ -232,5 +236,3 @@ def get_movies_by_genre(genre=None, limit=12):
     ]
 
 
-print(df[df["name"].str.contains("1917|2012", na=False)][["name", "year"]])
-print(df.columns)
