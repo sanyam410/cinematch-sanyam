@@ -1,3 +1,13 @@
+---
+title: CineMatch
+emoji: 🎬
+colorFrom: red
+colorTo: black
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 🎬 CineMatch
 
 > **Find something worth watching.** A semantic movie-recommendation engine that understands *plots*, not just genres — wrapped in a cinematic web experience for people who love films.
