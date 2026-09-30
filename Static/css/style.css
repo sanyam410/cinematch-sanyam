@@ -1644,3 +1644,61 @@ body::-webkit-scrollbar-thumb {
   width: 100%;
   max-width: 860px;
 }
+
+/* ---------- ABOUT PAGE ---------- */
+
+.about-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 6rem 2rem 4rem;
+}
+
+.about-hero h1 span { color: var(--accent, #d9a441); }
+
+.about-lede {
+    font-size: 1.15rem;
+    color: #bdb8b0;
+    margin-top: 1.2rem;
+    line-height: 1.7;
+}
+
+.about-section { margin-top: 3.5rem; }
+
+.about-section h2 {
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.2rem;
+    color: #f0ede7;
+}
+
+.about-section p {
+    color: #bdb8b0;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.about-limits { list-style: none; padding: 0; }
+
+.about-limits li {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: #bdb8b0;
+    line-height: 1.7;
+}
+
+.about-limits strong { color: #f0ede7; display: block; margin-bottom: 0.25rem; }
+
+.about-stack { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
+
+.about-stack span {
+    border: 1px solid rgba(217, 164, 65, 0.4);
+    color: #d9a441;
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+}
+
+.about-credit { color: #8a857e; font-size: 0.95rem; }
+
+.about-credit a { color: #d9a441; text-decoration: none; }

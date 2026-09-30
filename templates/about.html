@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About — CineMatch</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<nav class="navbar">
+    <a href="{{ url_for('home') }}" class="logo">CineMatch</a>
+    <div class="nav-links">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('explore') }}">Explore</a>
+        <a href="{{ url_for('about') }}" class="active">About</a>
+    </div>
+</nav>
+
+<body>
+
+    <main class="movie-page about-page">
+
+        
+
+        <section class="results-header about-hero">
+
+            <p class="eyebrow">
+                ABOUT CINEMATCH
+            </p>
+
+            <h1>
+                Recommend by <span>story,</span><br>
+                not popularity.
+            </h1>
+
+            <p class="about-lede">
+                Netflix shows you what's trending. CineMatch shows you what
+                <em>feels</em> like the film you already love.
+            </p>
+
+        </section>
+
+
+        <!-- HOW IT WORKS -->
+
+        <section class="about-section">
+
+            <h2>How it works</h2>
+
+            <p>
+                Every film in our library — 7,500+ movies from IMDb, 1980–2020 —
+                is converted into a 384-dimensional vector using a sentence-embedding
+                model (all-MiniLM-L6-v2). The vector captures not just the plot,
+                but the genre, director and lead cast of each film.
+            </p>
+
+            <p>
+                When you search, CineMatch embeds what you typed and finds the
+                nearest vectors by cosine similarity — the math of "these stories
+                feel alike." Director, cast and genre overlaps earn a small ranking
+                bonus on top.
+            </p>
+
+            <p>
+                If your movie isn't in the library — say, a 1972 classic — we fetch
+                its real plot and credits from the OMDb API, embed that instead,
+                and recommend the library's closest semantic neighbours.
+            </p>
+
+        </section>
+
+
+        <!-- HONEST LIMITATIONS -->
+
+        <section class="about-section">
+
+            <h2>The honest limitations</h2>
+
+            <ul class="about-limits">
+
+                <li>
+                    <strong>The library has edges.</strong>
+                    Recommendations always come from our 1980–2020 catalogue.
+                    Search a film outside it and you'll get films
+                    <em>like it</em> — never the film itself, unless we have it.
+                </li>
+
+                <li>
+                    <strong>The fallback is approximate.</strong>
+                    Out-of-library matches rely on OMDb's plot summary, which is
+                    sometimes a single sentence. Results are good, not perfect.
+                </li>
+
+                <li>
+                    <strong>Meaning, not taste.</strong>
+                    CineMatch compares stories — it doesn't learn from users,
+                    track trends, or know what's popular this week.
+                </li>
+
+                <li>
+                    <strong>Free hosting has trade-offs.</strong>
+                    On the lightweight deployment, movies outside the library
+                    may not be searchable; the full experience runs where the
+                    embedding model fits in memory.
+                </li>
+
+                <li>
+                    <strong>Posters depend on OMDb.</strong>
+                    On its free tier, artwork and details can occasionally be
+                    missing or rate-limited.
+                </li>
+
+            </ul>
+
+        </section>
+
+
+        <!-- STACK -->
+
+        <section class="about-section">
+
+            <h2>Built with</h2>
+
+            <div class="about-stack">
+                <span>Python</span>
+                <span>Flask</span>
+                <span>SentenceTransformers</span>
+                <span>scikit-learn</span>
+                <span>RapidFuzz</span>
+                <span>OMDb API</span>
+            </div>
+
+            <p class="about-credit">
+                Designed and built by
+                <a href="https://github.com/sanyam410/cinematch" target="_blank">Sanyam Jha</a>.
+                Data courtesy of IMDb; metadata and posters via OMDb.
+            </p>
+
+        </section>
+
+    </main>
+
+</body>
+
+
+
+</html>

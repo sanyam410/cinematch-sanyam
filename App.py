@@ -20,17 +20,22 @@ OMDB_API_KEY = os.getenv("OMDB_API_KEY")
 # --------------------------------------------------
 # OMDb MOVIE DETAILS
 # --------------------------------------------------
+from functools import lru_cache
 
+@lru_cache(maxsize=512)
 def get_movie_details(movie_title_key):
-    if not OMDB_API_KEY:          # don't hit API without a key
+    if not OMDB_API_KEY:
         return None
-    response = requests.get(
-        "https://www.omdbapi.com/",
-        params={"apikey": OMDB_API_KEY, "t": movie_title_key},
-        timeout=10,
-    )
-    data = response.json()
-    return data if data.get("Response") == "True" else None
+    try:
+        response = requests.get(
+            "https://www.omdbapi.com/",
+            params={"apikey": OMDB_API_KEY, "t": movie_title_key},
+            timeout=10,
+        )
+        data = response.json()
+        return data if data.get("Response") == "True" else None
+    except requests.RequestException:
+        return None
 
 
 # --------------------------------------------------
@@ -49,6 +54,10 @@ def serve_image(filename):
 @app.route('/')
 def home():
     return render_template('index.html',cine=daily_content())
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 # --------------------------------------------------
 # EXPLORE
@@ -280,6 +289,10 @@ def movie_details(title):
 # --------------------------------------------------
 
 if __name__ == '__main__':
-    app.run(debug=os.getenv("FLASK_DEBUG") == "1")
+    app.run(
+        host="0.0.0.0",
+        port=int(os.getenv("PORT", 7860)),
+        debug=os.getenv("FLASK_DEBUG") == "1"
+    )
 
 
